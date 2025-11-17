@@ -11,8 +11,10 @@ def fetch_top_coins():
         'page': 1,
     }
     import requests
-    st.write("Raw API:", requests.get(url, params=params).status_code)
     response = requests.get(url, params = params)
+    if response.status_code == 429:
+        st.warning("API CALLS EXCEEDED")
+        return
     coins = response.json()
 
     return [x['id'] for x in coins]
