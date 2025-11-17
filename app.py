@@ -1,6 +1,7 @@
 import streamlit as st
 
-@st.cache_data(ttl = 600)
+#Get top 100 coins
+@st.cache_data(ttl = 1000)
 def fetch_top_coins():
     url = 'https://api.coingecko.com/api/v3/coins/markets'
     params = {
@@ -10,6 +11,7 @@ def fetch_top_coins():
         'page': 1,
     }
     import requests
+    st.write("Raw API:", requests.get(url, params=params).status_code)
     response = requests.get(url, params = params)
     coins = response.json()
 
@@ -18,6 +20,7 @@ def fetch_top_coins():
 if 'coins' not in st.session_state:
     st.session_state.coins = fetch_top_coins()
 
+#Display separate pages
 main_page = st.Page("main_page.py", title = "All Coins", icon ='🪙')
 page_2 = st.Page("page_2.py", title = 'Coin Data', icon = '📊')
 
